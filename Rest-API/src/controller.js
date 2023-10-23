@@ -29,7 +29,7 @@ class PersonaController{
 
 class LibrosController{
 
-    async getAll(req, res) {
+    async getAll(res) {
         const [result] = await pool.query('SELECT * FROM libros');
         res.json(result);
     }
@@ -51,7 +51,7 @@ class LibrosController{
 
     async insertOne(req,res){
         try{
-        const persona = req.body;
+        const libro = req.body;
         const [result] = await pool.query(`INSERT INTO Libros(nombre, autor, categoria, fecha, ISBN) VALUES (?, ?, ?, ?, ?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN]);
         if (result.length === 0){
             throw new Error('No se pudo insertar.')
@@ -66,7 +66,7 @@ class LibrosController{
 
     async updateOne(req,res){
         try {
-            const persona = req.body;
+            const libro = req.body;
             const [result] = await pool.query(`UPDATE Libros SET nombre=(?), autor=(?), categoria=(?), fecha=(?), ISBN=(?) WHERE id=(?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN, libro.id]);
             if (result.length === 0){
                 throw new Error('Libro no encontrado.')
@@ -82,7 +82,7 @@ class LibrosController{
 
     async deleteOne(req,res) {
         try{
-        const persona = req.body;
+        const libro = req.body;
         const [result] = await pool.query(`DELETE FROM Libros WHERE ISBN=(?)`, [libro.ISBN]);   
         if (result.length === 0){
             throw new Error('Libro no encontrado.')
