@@ -52,7 +52,7 @@ class LibrosController{
     async insertOne(req, res){
         try{
         const libro = req.body;
-        const [result] = await pool.query(`INSERT INTO libros(nombre, autor, categoria, fecha, ISBN) VALUES (?, ?, ?, ?, ?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN]);
+        const [result] = await pool.query(`INSERT INTO libros(nombre, autor, categoria, añoPublicacion, ISBN) VALUES (?, ?, ?, ?, ?)`, [libro.nombre, libro.autor, libro.categoria, libro.añoPublicacion, libro.ISBN]);
         if (result.length === 0){
             throw new Error('No se pudo insertar.')
         } else {
@@ -67,7 +67,7 @@ class LibrosController{
     async updateOne(req, res){
         try {
             const libro = req.body;
-            const [result] = await pool.query(`UPDATE libros SET nombre=(?), autor=(?), categoria=(?), fecha=(?), ISBN=(?) WHERE id=(?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN, libro.id]);
+            const [result] = await pool.query(`UPDATE libros SET nombre=(?), autor=(?), categoria=(?), añoPublicacion=(?), ISBN=(?) WHERE id=(?)`, [libro.nombre, libro.autor, libro.categoria, libro.añoPublicacion, libro.ISBN, libro.id]);
             if (result.length === 0){
                 throw new Error('Libro no encontrado.')
             } else {
