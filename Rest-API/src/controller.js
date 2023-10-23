@@ -29,15 +29,15 @@ class PersonaController{
 
 class LibrosController{
 
-    async getAll(res) {
+    async getAll(req, res) {
         const [result] = await pool.query('SELECT * FROM libros');
         res.json(result);
     }
 
-    async getOne(req,res){
+    async getOne(req, res){
         try {
         const libro = req.body;
-        const [result] = await pool.query(`SELECT * FROM Libros WHERE id=(?)`, [libro.id]);
+        const [result] = await pool.query(`SELECT * FROM libros WHERE id=(?)`, [libro.id]);
         if (result.length === 0){
             throw new Error('Libro sin datos.')
         } else {
@@ -49,10 +49,10 @@ class LibrosController{
     }
     }
 
-    async insertOne(req,res){
+    async insertOne(req, res){
         try{
         const libro = req.body;
-        const [result] = await pool.query(`INSERT INTO Libros(nombre, autor, categoria, fecha, ISBN) VALUES (?, ?, ?, ?, ?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN]);
+        const [result] = await pool.query(`INSERT INTO libros(nombre, autor, categoria, fecha, ISBN) VALUES (?, ?, ?, ?, ?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN]);
         if (result.length === 0){
             throw new Error('No se pudo insertar.')
         } else {
@@ -64,10 +64,10 @@ class LibrosController{
     }
     }
 
-    async updateOne(req,res){
+    async updateOne(req, res){
         try {
             const libro = req.body;
-            const [result] = await pool.query(`UPDATE Libros SET nombre=(?), autor=(?), categoria=(?), fecha=(?), ISBN=(?) WHERE id=(?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN, libro.id]);
+            const [result] = await pool.query(`UPDATE libros SET nombre=(?), autor=(?), categoria=(?), fecha=(?), ISBN=(?) WHERE id=(?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN, libro.id]);
             if (result.length === 0){
                 throw new Error('Libro no encontrado.')
             } else {
@@ -80,10 +80,10 @@ class LibrosController{
         
     }
 
-    async deleteOne(req,res) {
+    async deleteOne(req, res) {
         try{
         const libro = req.body;
-        const [result] = await pool.query(`DELETE FROM Libros WHERE ISBN=(?)`, [libro.ISBN]);   
+        const [result] = await pool.query(`DELETE FROM libros WHERE ISBN=(?)`, [libro.ISBN]);   
         if (result.length === 0){
             throw new Error('Libro no encontrado.')
         } else {
