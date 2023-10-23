@@ -41,9 +41,18 @@ class LibrosController{
     }
 
     async insertOne(req,res){
+        try{
         const persona = req.body;
-        const [result] = await pool.query(`INSERT INTO Libros(nombre, autor, categoria, fecha, ISBN) VALUES (?, ?, ?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN]);
-        res.json({"Libro insertado con ID: ": result.insertId})
+        const [result] = await pool.query(`INSERT INTO Libros(nombre, autor, categoria, fecha, ISBN) VALUES (?, ?, ?, ?, ?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN]);
+        if (result.length === 0){
+            throw new Error('No se pudo insertar.')
+        } else {
+            res.json({"Libro insertado con ID: ": result.insertId})
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(404).json({ error: 'Los datos ingresados sobrepasan los caracteres permitidos.' });
+    }
     }
 
     async updateOne(req,res){
