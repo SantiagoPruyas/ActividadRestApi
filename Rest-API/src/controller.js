@@ -39,6 +39,13 @@ class LibrosController{
         const [result] = await pool.query(`SELECT * FROM Libros WHERE id=(?)`, [libro.id]);
         res.json(result);
     }
+
+    async insertOne(req,res){
+        const persona = req.body;
+        const [result] = await pool.query(`INSERT INTO Libros(nombre, autor, categoria, fecha, ISBN) VALUES (?, ?, ?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN]);
+        res.json({"Libro insertado con ID: ": result.insertId})
+    }
+
 }
 
 export const persona = new PersonaController();
