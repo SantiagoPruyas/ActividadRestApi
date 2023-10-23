@@ -35,9 +35,18 @@ class LibrosController{
     }
 
     async getOne(req,res){
+        try {
         const libro = req.body;
         const [result] = await pool.query(`SELECT * FROM Libros WHERE id=(?)`, [libro.id]);
-        res.json(result);
+        if (result.length === 0){
+            throw new Error('Libro no encontrado.')
+        } else {
+            res.json(result);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(404).json({ error: 'ID inexistente.' });
+    }
     }
 
     async insertOne(req,res){
