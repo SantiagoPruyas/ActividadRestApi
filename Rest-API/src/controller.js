@@ -51,7 +51,7 @@ class LibrosController{
         }
     } catch (error) {
         console.error(error);
-        res.status(404).json({ error: 'Los datos ingresados sobrepasan los caracteres permitidos.' });
+        res.status(404).json({ error: 'Los datos ingresados no corresponden a un libro.' });
     }
     }
 
@@ -66,15 +66,24 @@ class LibrosController{
             }
         } catch (error) {
             console.error(error);
-            res.status(404).json({ error: 'id inexistente.' });
+            res.status(404).json({ error: 'ID inexistente.' });
         }
         
     }
 
     async deleteOne(req,res) {
+        try{
         const persona = req.body;
-        const [result] = await pool.query(`DELETE FROM Libros WHERE ISBN=(?)`, [libro.ISBN]);
-        res.json({"Registros eliminados": result.affectedRows});
+        const [result] = await pool.query(`DELETE FROM Libros WHERE ISBN=(?)`, [libro.ISBN]);   
+        if (result.length === 0){
+            throw new Error('Libro no encontrado.')
+        } else {
+            res.json({"Registros eliminados": result.affectedRows});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(404).json({ error: 'ID inexistente.' });
+    }
     }
 
 }
