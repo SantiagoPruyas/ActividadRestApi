@@ -47,9 +47,19 @@ class LibrosController{
     }
 
     async updateOne(req,res){
-        const persona = req.body;
-        const [result] = await pool.query(`UPDATE Libros SET nombre=(?), autor=(?), categoria=(?), fecha=(?), ISBN=(?) WHERE id=(?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN, libro.id]);
-        res.json({"Registros actualizados": result.changedRows});
+        try {
+            const persona = req.body;
+            const [result] = await pool.query(`UPDATE Libros SET nombre=(?), autor=(?), categoria=(?), fecha=(?), ISBN=(?) WHERE id=(?)`, [libro.nombre, libro.autor, libro.categoria, libro.año-publicacion, libro.ISBN, libro.id]);
+            if (result.length === 0){
+                throw new Error('Libro no encontrado.')
+            } else {
+                res.json({"Registros actualizados": result.changedRows});
+            }
+        } catch (error) {
+            console.error(error);
+            res.status(404).json({ error: 'id inexistente.' });
+        }
+        
     }
 
     async deleteOne(req,res) {
