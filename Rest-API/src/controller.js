@@ -39,13 +39,13 @@ class LibrosController{
         const libro = req.body;
         const [result] = await pool.query(`SELECT * FROM Libros WHERE id=(?)`, [libro.id]);
         if (result.length === 0){
-            throw new Error('Libro no encontrado.')
+            throw new Error('Libro sin datos.')
         } else {
             res.json(result);
         }
     } catch (error) {
         console.error(error);
-        res.status(404).json({ error: 'ID inexistente.' });
+        res.status(404).json({ error: 'Libro no encontrado o no cargado.' });
     }
     }
 
